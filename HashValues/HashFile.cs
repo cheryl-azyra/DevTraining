@@ -9,21 +9,36 @@ namespace HashValues
     {
         static void Main(string[] args)
         {
+            
             // Set some variables
-            var basePath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "Hawthorn Xerox Sample OPO files"));
-            var sourcePath = Path.Combine(basePath, "Input");
-            var destinationPath = Path.Combine(basePath, "Output");
+            var sourcePath = "";
+            var destinationPath = "";
 
-            // Check source directory exists - if not exit. 
-            if (!Directory.Exists(sourcePath))
+            // Get dource directory from user 
+            do
             {
-                Console.WriteLine($"Source Directory not found: {sourcePath}");
-                Console.WriteLine($"Exiting program in 30 seconds");
-                Thread.Sleep(30000);
-                Environment.Exit(0);
+              
+                Console.WriteLine("Enter the Source Directory (or 'exit' to exit): ");
+                sourcePath = Console.ReadLine();
 
-            }
+                if(sourcePath.ToLower() =="exit")
+                {
+                    Console.WriteLine("Exiting program...");
+                    Environment.Exit(0);
+                }
+                // Check source directory exists - if not exit. 
+                if (!Directory.Exists(sourcePath))
+                {
 
+                    Console.WriteLine($"Source Directory not found: {sourcePath}");
+              
+                }
+
+            } while (!Directory.Exists(sourcePath));
+
+            // Get destiantion directory from user
+            Console.WriteLine("Enter the Destination Directory: ");
+            destinationPath = Console.ReadLine();
             Directory.CreateDirectory(destinationPath);
 
             // Find each file in source directly and generate hash
