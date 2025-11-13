@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 
 
@@ -78,7 +80,7 @@ namespace HashValues
                         foreach (string line in lines)
                         {
                        
-                            writer.WriteLine(line.TrimEnd() + "#" + GetHashStringValue(line.TrimEnd()));
+                            writer.WriteLine(line.TrimEnd() + "#" + GetSHA256HashStringValue(line.TrimEnd()));
 
                         }
 
@@ -105,6 +107,27 @@ namespace HashValues
 
             }
             return hash.ToString();
+        }
+
+        // Get hashed value of the line
+        // Generate Hash by converting line to bytes and using SHA-256 hash to create unique value
+        // Return has in hexidecimal form.
+        public static string GetSHA256HashStringValue(string line)
+        {
+            using (SHA256 sha = SHA256.Create())
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(line);
+                byte[] hashBytes = sha.ComputeHash(bytes);
+
+                string hash = "";
+                // Calculate hash for each charcter
+                foreach (byte b in hashBytes)
+                {
+                    hash += b.ToString("x2");
+
+                }
+                return hash.ToString();
+            }
         }
     }
 }
