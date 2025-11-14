@@ -7,31 +7,61 @@ namespace HashFilesLib
 {
     public class HashFiles
     {
+        // Get Hashed files for every file in a directory
         public static String GetHashedFiles(string sourcePath, string destinationPath)
         {
             var result = "";
+            var fileCount = 0;
 
             // Check inputs are not null
             if (sourcePath == "" || destinationPath == "")
             {
                 return "Error: Please enter both a Source and Destination Path";
             }
-
-            //Check source path exists
-            if (!Directory.Exists(sourcePath))
+            try
             {
-                return "Error: Source Path does not exist";
-            }
-            Directory.CreateDirectory(destinationPath);
 
-            // Find each file in source directly and generate hash
-            foreach (string file in Directory.GetFiles(sourcePath))
-            {
-                result += GenerateHashedFile(sourcePath, Path.GetFileName(file), destinationPath) + Environment.NewLine;
+                Directory.CreateDirectory(destinationPath);
+
+                // Find each file in source directly and generate hash
+                foreach (string file in Directory.GetFiles(sourcePath))
+                {
+                    result += GetHashedFile(sourcePath, Path.GetFileName(file), destinationPath) + Environment.NewLine;
+                    fileCount++;
+                }
+                result += $"Completed Sucessfully - {fileCount} files found" ;
+                return result;
+
             }
-            result += "Completed Sucessfully";
-            return result;
+            catch (Exception e)
+            {
+                return $"Error: {e.Message}";
+            }
+
+
         }
+
+
+        // Get Hashed files for a specific file in a directory
+        public static String GetHashedFile(string sourcePath, string fileName, string destinationPath)
+        {
+            var result = "";
+            var sourceFile = Path.Combine(sourcePath, fileName);
+            try
+            {
+               
+                Directory.CreateDirectory(destinationPath);
+
+                // Find each file in source directly and generate hash
+                result += GenerateHashedFile(sourcePath, fileName, destinationPath);
+
+                return result;
+            }catch(FileNotFoundException e)
+            {
+                return $"Error: Source file does not exist - {sourceFile}";
+            }
+        }
+
 
         // Take a source file,generate a hashed version, and save to destination.
         public static string GenerateHashedFile(string sourcePath, string fileName, string destinationPath)
