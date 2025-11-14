@@ -30,8 +30,19 @@ namespace HashFilesApp
         // Calls class library to hash all files from sourcePath and output them to the destinationPath
         public void GenerateHashedFile(object sender, RoutedEventArgs e)
         {
+            if (sourceFileNameTB.Text == "")
+            {
 
-            ResultText.Content = HashFilesLib.HashFiles.GetHashedFiles(sourcePathTB.Text, destinationPathTB.Text);
+                ResultText.Content = HashFilesLib.HashFiles.GetHashedFiles(sourcePathTB.Text, sourcePathTB.Text + @"\Output");
+
+            }
+            else
+            {
+
+                ResultText.Content = HashFilesLib.HashFiles.GetHashedFile(sourcePathTB.Text, sourceFileNameTB.Text, sourcePathTB.Text + @"\Output");
+
+            }
+
             ResultText.Visibility = Visibility.Visible;
 
         }
