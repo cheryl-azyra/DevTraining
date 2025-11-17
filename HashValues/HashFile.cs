@@ -16,7 +16,7 @@ namespace HashValues
             var sourcePath = "";
             var destinationPath = "";
 
-            // Get dource directory from user 
+            // Get source directory from user 
             do
             {
 
