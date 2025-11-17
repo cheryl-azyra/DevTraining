@@ -61,14 +61,13 @@ namespace HashValues
         {
             var sourceFile = Path.Combine(sourcePath, fileName);
             var lines = File.ReadAllLines(sourceFile);
-            var destinationFile = Path.Combine(destinationPath, fileName+"H");
-            var result = "";
+            var destinationFile = Path.Combine(destinationPath, $"{fileName}H");
+            var result = new StringBuilder();
              
             // check file is not blank
             if (lines.Length == 0)
             {
-                result = $"No data found in file: {sourceFile}";
-                return result;
+                return $"No data found in file: {sourceFile}";
             }
             else
             {
@@ -84,7 +83,7 @@ namespace HashValues
 
                         }
 
-                        result = $"Generated Hashed File: {destinationFile}";
+                        result.Append($"Generated Hashed File: {destinationFile}");
                     }
                     catch (Exception e)
                     {
@@ -93,7 +92,7 @@ namespace HashValues
                 }
             }
             
-            return result;
+            return result.ToString();
         }
 
         // Get hashed value of the line
