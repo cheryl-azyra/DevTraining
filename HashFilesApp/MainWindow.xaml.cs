@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using HashFilesLib;
+using System.IO;
 
 namespace HashFilesApp
 {
@@ -30,16 +31,17 @@ namespace HashFilesApp
         // Calls class library to hash all files from sourcePath and output them to the destinationPath
         public void GenerateHashedFile(object sender, RoutedEventArgs e)
         {
+            var destinationPath = System.IO.Path.Combine(sourcePathTB.Text, "Output");
             if (string.IsNullOrEmpty(sourceFileNameTB.Text))
             {
-
-                ResultText.Content = HashFilesLib.HashFiles.GetHashedFiles(sourcePathTB.Text, sourcePathTB.Text + @"\Output");
+  
+                ResultText.Content = HashFilesLib.HashFiles.GetHashedFiles(sourcePathTB.Text, destinationPath);
 
             }
             else
             {
 
-                ResultText.Content = HashFilesLib.HashFiles.GetHashedFile(sourcePathTB.Text, sourceFileNameTB.Text, sourcePathTB.Text + @"\Output");
+                ResultText.Content = HashFilesLib.HashFiles.GetHashedFile(sourcePathTB.Text, sourceFileNameTB.Text, System.IO.Path.Combine(sourcePathTB.Text, destinationPath));
 
             }
 
