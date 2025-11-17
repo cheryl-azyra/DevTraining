@@ -11,7 +11,7 @@ namespace HashValues
     {
         static void Main(string[] args)
         {
-            
+
             // Set some variables
             var sourcePath = "";
             var destinationPath = "";
@@ -19,7 +19,7 @@ namespace HashValues
             // Get dource directory from user 
             do
             {
-              
+
                 Console.WriteLine("Enter the Source Directory (or 'exit' to exit): ");
                 sourcePath = Console.ReadLine();
 
@@ -33,7 +33,7 @@ namespace HashValues
                 {
 
                     Console.WriteLine($"Source Directory not found: {sourcePath}");
-              
+
                 }
 
             } while (!Directory.Exists(sourcePath));
@@ -47,7 +47,7 @@ namespace HashValues
             foreach (string file  in Directory.GetFiles(sourcePath))
             {
                var result =  GenerateHashedFile(sourcePath, Path.GetFileName(file), destinationPath);
-               Console.WriteLine(result);
+                Console.WriteLine(result);
             }
 
             Console.WriteLine($"Completed Hash Program. Will close in 30 seconds");
@@ -63,7 +63,7 @@ namespace HashValues
             var lines = File.ReadAllLines(sourceFile);
             var destinationFile = Path.Combine(destinationPath, $"{fileName}H");
             var result = new StringBuilder();
-             
+
             // check file is not blank
             if (lines.Length == 0)
             {
@@ -78,7 +78,7 @@ namespace HashValues
                     {
                         foreach (string line in lines)
                         {
-                       
+
                             writer.WriteLine(line.TrimEnd() + "#" + GetSHA256HashStringValue(line.TrimEnd()));
 
                         }
@@ -91,7 +91,7 @@ namespace HashValues
                     }
                 }
             }
-            
+
             return result.ToString();
         }
 
@@ -115,17 +115,8 @@ namespace HashValues
         {
             using (SHA256 sha = SHA256.Create())
             {
-                byte[] bytes = Encoding.UTF8.GetBytes(line);
-                byte[] hashBytes = sha.ComputeHash(bytes);
-
-                string hash = "";
-                // Calculate hash for each charcter
-                foreach (byte b in hashBytes)
-                {
-                    hash += b.ToString("x2");
-
-                }
-                return hash.ToString();
+                byte[] hashBytes = sha.ComputeHash(Encoding.UTF8.GetBytes(line));
+                return BitConverter.ToString(hashBytes).Replace("-", "");
             }
         }
     }

@@ -54,7 +54,7 @@ namespace HashFilesLib
 
                 // Find each file in source directly and generate hash
                 return GenerateHashedFile(sourcePath, fileName, destinationPath);
-
+ 
             }catch(FileNotFoundException e)
             {
                 return $"Error: Source file does not exist - {sourceFile}";
@@ -121,17 +121,8 @@ namespace HashFilesLib
         {
             using (SHA256 sha = SHA256.Create())
             {
-                byte[] bytes = Encoding.UTF8.GetBytes(line);
-                byte[] hashBytes = sha.ComputeHash(bytes);
-
-                string hash = "";
-                // Calculate hash for each charcter
-                foreach (byte b in hashBytes)
-                {
-                    hash += b.ToString("x2");
-
-                }
-                return hash.ToString();
+                byte[] hashBytes = sha.ComputeHash(Encoding.UTF8.GetBytes(line));
+                return BitConverter.ToString(hashBytes).Replace("-", "");
             }
         }
     }
