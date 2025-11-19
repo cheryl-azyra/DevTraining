@@ -2,61 +2,67 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading;
 
-
-namespace HashValues
+namespace HashFilesLib
 {
-    internal class HashFile
+    public class HashFiles
     {
-        static void Main(string[] args)
+        // Get Hashed files for every file in a directory
+        public static String GetHashedFiles(string sourcePath, string destinationPath)
         {
+            var result = new StringBuilder();
+            var fileCount = 0;
 
-            // Set some variables
-            var sourcePath = "";
-            var destinationPath = "";
-
-            // Get source directory from user 
-            do
+            // Check inputs are not null
+            if (string.IsNullOrEmpty(sourcePath) || string.IsNullOrEmpty(destinationPath))
+            {
+                return "Error: Please enter both a Source and Destination Path";
+            }
+            try
             {
 
-                Console.WriteLine("Enter the Source Directory (or 'exit' to exit): ");
-                sourcePath = Console.ReadLine();
+                Directory.CreateDirectory(destinationPath);
 
-                if(string.Equals(sourcePath.ToLower(),"exit"))
+                // Find each file in source directly and generate hash
+                foreach (string file in Directory.GetFiles(sourcePath))
                 {
-                    Console.WriteLine("Exiting program...");
-                    Environment.Exit(0);
+                    result.Append(GetHashedFile(sourcePath, Path.GetFileName(file), destinationPath));
+                    fileCount++;
                 }
-                // Check source directory exists - if not exit. 
-                if (!Directory.Exists(sourcePath))
-                {
+                result.AppendLine( $"Completed Sucessfully - {fileCount} files found");
+                return result.ToString();
 
-                    Console.WriteLine($"Source Directory not found: {sourcePath}");
-
-                }
-
-            } while (!Directory.Exists(sourcePath));
-
-            // Get destiantion directory from user
-            Console.WriteLine("Enter the Destination Directory: ");
-            destinationPath = Console.ReadLine();
-            Directory.CreateDirectory(destinationPath);
-
-            // Find each file in source directly and generate hash
-            foreach (string file  in Directory.GetFiles(sourcePath))
+            }
+            catch (Exception e)
             {
-               var result =  GenerateHashedFile(sourcePath, Path.GetFileName(file), destinationPath);
-                Console.WriteLine(result);
+                return $"Error: {e.Message}";
             }
 
-            Console.WriteLine($"Completed Hash Program. Will close in 30 seconds");
-            Thread.Sleep(30000);
 
         }
 
+
+        // Get Hashed files for a specific file in a directory
+        public static String GetHashedFile(string sourcePath, string fileName, string destinationPath)
+        {
+            var result = new StringBuilder();
+            var sourceFile = Path.Combine(sourcePath, fileName);
+            try
+            {
+               
+                Directory.CreateDirectory(destinationPath);
+
+                // Find each file in source directly and generate hash
+                return GenerateHashedFile(sourcePath, fileName, destinationPath);
+ 
+            }catch(FileNotFoundException e)
+            {
+                return $"Error: Source file does not exist - {sourceFile}";
+            }
+        }
+
+
         // Take a source file,generate a hashed version, and save to destination.
-        // Generate Hash by taking the sum of (position * ascii encoding) for each character on line
         public static string GenerateHashedFile(string sourcePath, string fileName, string destinationPath)
         {
             var sourceFile = Path.Combine(sourcePath, fileName);
@@ -83,7 +89,7 @@ namespace HashValues
 
                         }
 
-                        result.Append($"Generated Hashed File: {destinationFile}");
+                        result.AppendLine($"Generated Hashed File: {destinationFile}");
                     }
                     catch (Exception e)
                     {
@@ -102,7 +108,7 @@ namespace HashValues
             // Calculate hash for each charcter
             for (int i = 0; i < line.Length; i++)
             {
-                hash +=  ((i + 1) * (int)line[i]);
+                hash += ((i + 1) * (int)line[i]);
 
             }
             return hash.ToString();
