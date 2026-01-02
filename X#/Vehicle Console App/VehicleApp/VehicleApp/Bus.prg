@@ -27,9 +27,9 @@ CLASS Bus INHERIT Vehicle
     
     OVERRIDE METHOD DISPLAY() AS VOID
         SUPER:DISPLAY()
-        Console.Write( ei"\tSeats: {Seats}\n";
-            +ei"\tFloors: {Floors}\n";
-            +ei"\tStanding: {Standing}\n")
+        Console.Write( ei"\tSeats: {Seats}"+System.Environment.NewLine;
+            +ei"\tFloors: {Floors}"+System.Environment.NewLine;
+            +ei"\tStanding: {Standing}"+System.Environment.NewLine)
     END METHOD
     
     

@@ -64,21 +64,21 @@ CLASS Vehicle
     
     VIRTUAL METHOD DISPLAY() AS VOID
         
-        Console.Write( ei"{SELF:GetType():Name} {Number}:\n";
-            + ei"\tColor: {Color}\n";
-            + ei"\tMake: {Make}\n";
-            + ei"\tModel: {Model}\n")
+        Console.Write( ei"{SELF:GetType():Name} {Number}:"+System.Environment.NewLine;
+            + ei"\tColor: {Color}"+System.Environment.NewLine;
+            + ei"\tMake: {Make}"+System.Environment.NewLine;
+            + ei"\tModel: {Model}"+System.Environment.NewLine)
         
     END METHOD
     
     // STEP 10 - Overloaded display class
     VIRTUAL METHOD DISPLAY(includeWheels AS LOGIC) AS VOID
         
-        Console.Write( ei"{SELF:GetType():Name} {Number}:\n";
-            + ei"\tColor: {Color}\n";
-            + ei"\tMake: {Make}\n";
-            + ei"\tModel: {Model}\n";
-            +IIF(includeWheels,ei"\tWheels: {Wheels}\n","" ))
+        Console.Write( ei"{SELF:GetType():Name} {Number}:"+System.Environment.NewLine;
+            + ei"\tColor: {Color}"+System.Environment.NewLine;
+            + ei"\tMake: {Make}"+System.Environment.NewLine;
+            + ei"\tModel: {Model}"+System.Environment.NewLine;
+            +IIF(includeWheels,ei"\tWheels: {Wheels}"+System.Environment.NewLine,"" ))
         
     END METHOD
     

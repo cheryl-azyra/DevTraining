@@ -38,7 +38,7 @@ CLASS Car INHERIT Vehicle
     
     OVERRIDE METHOD DISPLAY() AS VOID
         SUPER:DISPLAY()
-        Console.Write( ei"\tSeats: {Seats}\n" )
+        Console.Write( ei"\tSeats: {Seats}"+System.Environment.NewLine )
     END METHOD
     
 END CLASS

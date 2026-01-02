@@ -22,8 +22,8 @@ FUNCTION Start() AS VOID STRICT
     // 	//
     // 	//
     // 	//     // Print Vehicle Detail
-    // 	//     Console.WriteLine(e"-----------------------------------------\n";
-    // 	//                         +e"Testing Vehicles (from steps  1 and 2)\n")
+    // 	//     Console.WriteLine(e"-----------------------------------------"+System.Environment.NewLine;
+    // 	//                         +e"Testing Vehicles (from steps  1 and 2)"+System.Environment.NewLine)
     // 	//     v1:Display()
     // 	//     v2:Display()
     // 	//
@@ -69,13 +69,13 @@ FUNCTION Start() AS VOID STRICT
     
     // STEP 6)	Use two separate For loops to display the details of the cars created in 4) and 5)
     PrintStep("6")
-    Console.WriteLine(e"Testing: Print Step 4 list using For loop : should have 1,2,3,4 cars \n")
+    Console.WriteLine(e"Testing: Print Step 4 list using For loop : should have 1,2,3,4 cars "+System.Environment.NewLine)
     PrintListCar(carsList)
     
-    Console.WriteLine(e"\nTesting: Print Step 4 C# array in X# using ForEach loop : should have 1,2,3,4 cars \n")
+    Console.WriteLine(e"\nTesting: Print Step 4 C# array in X# using ForEach loop : should have 1,2,3,4 cars "+System.Environment.NewLine)
     PrintCXCarArray(carsCXArr)
     
-    Console.WriteLine(e"\nTesting: Print step 5 X# array using For loop : should have cars 1 and 3\n")
+    Console.WriteLine(e"\nTesting: Print step 5 X# array using For loop : should have cars 1 and 3"+System.Environment.NewLine)
     PrintXArray(carsXArr)
     
     // STEP 7)	Create a List and add the second and fourth cars from the C# array to it. Add this list to the end of the X# array.
@@ -93,7 +93,7 @@ FUNCTION Start() AS VOID STRICT
         AAdd(carsXArr,c)
     NEXT
     
-    Console.WriteLine(e"Testing: 7)	Create a List and add the second and fourth cars from the C# array to it. Add this list to the end of the X# array: should have cars 1,3,2,4  \n")
+    Console.WriteLine(e"Testing: 7)	Create a List and add the second and fourth cars from the C# array to it. Add this list to the end of the X# array: should have cars 1,3,2,4  "+System.Environment.NewLine)
     PrintXArray(carsXArr)
     
     // STEP 8) Create a Codeblock to test if an object is not of type Vehicle. Use this Codeblock to determine which element in the X# array is not a Vehicle and print it out.
@@ -101,18 +101,18 @@ FUNCTION Start() AS VOID STRICT
     LOCAL Pos AS DWORD
     Pos := ASCAN(carsXArr,cb)
     
-    Console.WriteLine(ei"Testing: Printing which element in X# Array is not a vehicle & printing it: will return position 1 and print car 1\n")
+    Console.WriteLine(ei"Testing: Printing which element in X# Array is not a vehicle & printing it: will return position 1 and print car 1"+System.Environment.NewLine)
     
     Console.WriteLine(i"The object at position {Pos} is not a Vehicle")
     ((Vehicle)carsXArr[Pos]):DISPLAY()
     
     // Step 9)	Use System.Linq.IEnumerable<T>.OrderBy and a lambda expression to sort the cars by number of seats in descending order.
     PrintStep("9")
-    Console.WriteLine(e"Testing: Print carsList Pre Sort by seat descending\n")
+    Console.WriteLine(e"Testing: Print carsList Pre Sort by seat descending"+System.Environment.NewLine)
     PrintListCar(carsList)
     carsList := carsList:OrderByDescending({c => c:Seats}):toList()
     
-    Console.WriteLine(e"\nTesting:  Print carsList After Sort by seat descending\n")
+    Console.WriteLine(e"\nTesting:  Print carsList After Sort by seat descending"+System.Environment.NewLine)
     PrintListCar(carsList)
     
     
@@ -134,29 +134,29 @@ FUNCTION Start() AS VOID STRICT
         AAdd(carsCXArr, m1)
         AAdd(carsCXArr, m2)
         
-        Console.WriteLine(e"Testing: printing C# Array in X# - after trying to add motorbikes : should have cars 1,2,3,4 \n")
+        Console.WriteLine(e"Testing: printing C# Array in X# - after trying to add motorbikes : should have cars 1,2,3,4 "+System.Environment.NewLine)
         PrintCXCarArray(carsCXArr)
         
         // Add to X# Array from step 5)
         AAdd(carsXArr, m1)
         AAdd(carsXArr, m2)
         
-        Console.WriteLine(e"\nTesting: Updated X# Array  - after trying to add motorbikes : should have print cars  1,3,2,4 and motorbikes 5, 6 \n")
+        Console.WriteLine(e"\nTesting: Updated X# Array  - after trying to add motorbikes : should have print cars  1,3,2,4 and motorbikes 5, 6 "+System.Environment.NewLine)
         PrintXArray(carsXArr)
         
     CATCH e AS Exception
         
-        Console.WriteLine(ei"ERROR occured during processing of Step 11 : {e:Message}\n");
+        Console.WriteLine(ei"ERROR occured during processing of Step 11 : {e:Message}"+System.Environment.NewLine);
             
     END TRY
-    Console.WriteLine(ei"QUESTION RESPONSE: \n\t you cannot buld if you add motorbikes to a cars list. \n\t You cannot add motorbikes to cars C# array in X# - the system does not error and they are not added. \n\t You can add motorbikes to X#  cars arrays - but they will error when you try to access motorbikes as cars\n");
+    Console.WriteLine(ei"QUESTION RESPONSE: \n\t you cannot buld if you add motorbikes to a cars list. \n\t You cannot add motorbikes to cars C# array in X# - the system does not error and they are not added. \n\t You can add motorbikes to X#  cars arrays - but they will error when you try to access motorbikes as cars"+System.Environment.NewLine);
         
     // 12)	Use a foreach loop to loop through the X# array from 5) and only display the details of the Motorbikes
     PrintStep("12")
     LOCAL cb2 AS CODEBLOCK
     cb2 := {|v AS Vehicle| v:GetType():Name:ToLower() == "motorbike" }
     
-    Console.WriteLine(e"Testing: Print each motorbike in X# array : should print motobikes 5, 6\n")
+    Console.WriteLine(e"Testing: Print each motorbike in X# array : should print motobikes 5, 6"+System.Environment.NewLine)
     
     FOREACH v AS Vehicle IN carsXArr
         IF eval(cb2, v)
@@ -221,7 +221,7 @@ FUNCTION Start() AS VOID STRICT
     RETURN
     
 FUNCTION PrintStep(currStep AS STRING) AS VOID
-    Console.WriteLine(e"-----------------------------------------\n";
+    Console.WriteLine(e"-----------------------------------------"+System.Environment.NewLine;
         +i"Step {currStep}")
 END FUNCTION
 
@@ -253,7 +253,7 @@ FUNCTION PrintXArray(XArr AS ARRAY) AS VOID
         ELSEIF currVehicle:GetType():Name:ToLower()  == "bus"
             ((Bus) XArr[i]):Display()
         ELSE
-            Console.writeLine(ei"ERROR: Invalid Type - cannot print element at position {i}\n")
+            Console.writeLine(ei"ERROR: Invalid Type - cannot print element at position {i}"+System.Environment.NewLine)
         ENDIF
     NEXT
     
