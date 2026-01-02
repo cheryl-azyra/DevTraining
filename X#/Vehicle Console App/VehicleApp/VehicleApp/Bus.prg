@@ -21,13 +21,13 @@ BEGIN NAMESPACE VehicleApp
 
 	CONSTRUCTOR(color AS STRING, make AS STRING, model AS STRING, seats as INT, floors AS STRING, standing AS INT )
 		SUPER(color, make, model,6, seats)
-		THIS:Floors := floors
-		THIS:Standing := standing
+		SELF:Floors := floors
+		SELF:Standing := standing
 	END CONSTRUCTOR
 
    OVERRIDE METHOD DISPLAY() AS VOID
 		Super:DISPLAY()
-		Console.Writes( ei"\tSeats: {Seats}\n";
+		Console.Write( ei"\tSeats: {Seats}\n";
 							+ei"\tFloors: {Floors}\n";
 							+ei"\tStanding: {Standing}\n")
 	END METHOD

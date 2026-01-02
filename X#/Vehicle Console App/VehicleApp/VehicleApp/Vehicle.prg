@@ -32,39 +32,39 @@ BEGIN NAMESPACE VehicleApp
 
 
 	CONSTRUCTOR(color AS STRING, make AS STRING, model AS STRING)
-		THIS:Color := color
-		THIS:Make := make
-		THIS:Model := model
-		THIS:Wheels := wheels
+		SELF:Color := color
+		SELF:Make := make
+		SELF:Model := model
+		SELF:Wheels := wheels
 		Counter ++
-		THIS:Number := Counter
+		SELF:Number := Counter
 
 	END CONSTRUCTOR
 
 	 CONSTRUCTOR(color AS STRING, make AS STRING, model AS STRING, wheels AS INT)
-		THIS:Color := color
-		THIS:Make := CapitaliseEachWord(make)
-		THIS:Model := CapitaliseEachWord(model)
-		THIS:Wheels := wheels
+		SELF:Color := color
+		SELF:Make := CapitaliseEachWord(make)
+		SELF:Model := CapitaliseEachWord(model)
+		SELF:Wheels := wheels
 		Counter ++
-		THIS:Number := Counter
+		SELF:Number := Counter
 
 	END CONSTRUCTOR
 
 	 CONSTRUCTOR(color AS STRING, make AS STRING, model AS STRING, wheels AS INT,seats AS INT)
-		THIS:Color := color
-		THIS:Make := CapitaliseEachWord(make)
-		THIS:Model := CapitaliseEachWord(model)
-		THIS:Wheels := wheels
-		THIS:Seats := seats
+		SELF:Color := color
+		SELF:Make := CapitaliseEachWord(make)
+		SELF:Model := CapitaliseEachWord(model)
+		SELF:Wheels := wheels
+		SELF:Seats := seats
 		Counter ++
-		THIS:Number := Counter
+		SELF:Number := Counter
 
 	END CONSTRUCTOR
 
 	VIRTUAL METHOD DISPLAY() AS VOID
 
-		Console.Write( ei"{THIS:GetType():Name} {Number}:\n";
+		Console.Write( ei"{SELF:GetType():Name} {Number}:\n";
 			+ ei"\tColor: {Color}\n";
 			+ ei"\tMake: {Make}\n";
 			+ ei"\tModel: {Model}\n")
@@ -74,7 +74,7 @@ BEGIN NAMESPACE VehicleApp
 	// STEP 10 - Overloaded display class
 	VIRTUAL METHOD DISPLAY(includeWheels AS LOGIC) AS VOID
 
-		Console.Write( ei"{THIS:GetType():Name} {Number}:\n";
+		Console.Write( ei"{SELF:GetType():Name} {Number}:\n";
 			+ ei"\tColor: {Color}\n";
 			+ ei"\tMake: {Make}\n";
 			+ ei"\tModel: {Model}\n";
@@ -83,7 +83,7 @@ BEGIN NAMESPACE VehicleApp
 	END METHOD
 
 	VIRTUAL METHOD DisplayVroom() AS VOID
-		Local type := THIS:GetType():Name
+		Local type := SELF:GetType():Name
 		IF type == "Car"
 			 Console.WriteLine( "Vroom, vroom")
 		ELSEIF type == "Motorbike"
@@ -94,7 +94,7 @@ BEGIN NAMESPACE VehicleApp
 
 	END METHOD
 
-	PUBLIC STATIC METHOD CapitaliseEachWord(this s AS STRING) AS STRING
+	PUBLIC STATIC METHOD CapitaliseEachWord(SELF s AS STRING) AS STRING
 		LOCAL textInfo AS System.Globalization.TextInfo
 		textInfo := System.Globalization.CultureInfo.CurrentCulture:TextInfo
 		RETURN textInfo:ToTitleCase(s:ToLower())

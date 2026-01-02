@@ -26,13 +26,13 @@ BEGIN NAMESPACE VehicleApp
 //
 //     CONSTRUCTOR(color AS STRING, make AS STRING, model AS STRING, seats as AllowedSeats)
 //         SUPER(color, make, model,seats)
-//         This:Seats := seats
+//         SELF:Seats := seats
 //     END CONSTRUCTOR
 
   // Step 13 -- added seats is moved to vehicle
 	CONSTRUCTOR(color AS STRING, make AS STRING, model AS STRING, seats AS AllowedSeats)
 		SUPER(color, make, model)
-		This:Seats := seats
+		SELF:Seats := seats
 	END CONSTRUCTOR
 
 
