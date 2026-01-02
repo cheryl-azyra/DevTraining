@@ -20,5 +20,10 @@ CLASS Motorbike INHERIT Vehicle
         SUPER(color, make, model,2)
     END CONSTRUCTOR
     
+    OVERRIDE METHOD DISPLAY() AS VOID
+        SUPER:DISPLAY()
+        Console.Write( ei"\tWheels: 2"+System.Environment.NewLine )
+    END METHOD
+    
 END CLASS
 END NAMESPACE
