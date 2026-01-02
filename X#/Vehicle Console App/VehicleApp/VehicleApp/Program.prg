@@ -63,14 +63,16 @@ FUNCTION Start() AS VOID STRICT
     carsList:Add(c3)
     carsList:Add(c4)
     
-    
     // Add to C# Array in X#
     
     carsCXArr := <Car>{c1, c2, c3, c4}
     
     // STEP 5)	Create an empty X# array and then add the first and third cars in the List<Car> to it. Print out the details of the second car in the X# array.
     // add to X# Array
+    PrintStep("5")
     carsXArr :=  { (Car)carsList[0], (Car)carsList[2] }
+    Console.WriteLine(e"Testing:  Print out the details of the second car in the X# array. Should have car 3"+System.Environment.NewLine)
+    ((Car) carsXArr[2]):Display()
     
     // STEP 6)	Use two separate For loops to display the details of the cars created in 4) and 5)
     PrintStep("6")
