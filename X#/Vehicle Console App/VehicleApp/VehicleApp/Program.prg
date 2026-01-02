@@ -43,6 +43,7 @@ FUNCTION Start() AS VOID STRICT
     LOCAL c2 AS Car
     LOCAL c3 AS Car
     LOCAL c4 AS Car
+    LOCAL c5 AS Car
     
     // Create cars
     c1 := Car{"Black", "Volkswagon", "Golf", AllowedSeats.Five}
@@ -50,6 +51,10 @@ FUNCTION Start() AS VOID STRICT
     c3 := Car{"", "Mazda", "MX-5", AllowedSeats.Two}
     c4 := Car{"", "Kia", "Sorento", AllowedSeats.Seven}
     
+    // Testing error prints if creating a car with invalid number of seats
+    PrintStep("3")
+    Console.WriteLine(e"Testing error prints if creating a car with 3 seats "+System.Environment.NewLine)
+    c5 := Car{"", "Kia", "Sorento", (AllowedSeats)3}
     
     // Add to Cars list
     carsList := List<Car>{}

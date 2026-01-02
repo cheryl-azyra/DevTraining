@@ -52,6 +52,7 @@ CLASS Vehicle
     END CONSTRUCTOR
     
     CONSTRUCTOR(color AS STRING, make AS STRING, model AS STRING, wheels AS INT,seats AS INT)
+        
         SELF:Color := color
         SELF:Make := CapitaliseEachWord(make)
         SELF:Model := CapitaliseEachWord(model)
@@ -59,6 +60,8 @@ CLASS Vehicle
         SELF:Seats := seats
         Counter ++
         SELF:Number := Counter
+        
+        
         
     END CONSTRUCTOR
     
@@ -99,6 +102,7 @@ CLASS Vehicle
         textInfo := System.Globalization.CultureInfo.CurrentCulture:TextInfo
         RETURN textInfo:ToTitleCase(s:ToLower())
     END METHOD
+    
     
 END CLASS
 

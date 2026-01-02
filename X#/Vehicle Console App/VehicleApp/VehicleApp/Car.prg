@@ -8,6 +8,7 @@
 USING System
 USING System.Collections.Generic
 USING System.Text
+USING System.Linq
 
 BEGIN NAMESPACE VehicleApp
     
@@ -31,8 +32,19 @@ CLASS Car INHERIT Vehicle
     
     // Step 13 -- added seats is moved to vehicle
     CONSTRUCTOR(color AS STRING, make AS STRING, model AS STRING, seats AS AllowedSeats)
-        SUPER(color, make, model)
-        SELF:Seats := seats
+        
+        TRY
+            
+            ValidateAllowedSeats(Seats)
+            SUPER(color, make, model)
+            SELF:Seats := seats
+            
+        CATCH e AS Exception
+            
+            console.WriteLine(ei"Error! {e:Message}")
+            
+        END TRY
+        
     END CONSTRUCTOR
     
     
@@ -41,11 +53,32 @@ CLASS Car INHERIT Vehicle
         Console.Write( ei"\tSeats: {Seats}"+System.Environment.NewLine )
     END METHOD
     
+    PUBLIC STATIC METHOD ValidateAllowedSeats(seats AS INT) AS VOID
+        
+        TRY
+            
+            LOCAL aSeatsAllowed AS INT[]
+            aSeatsAllowed := <INT>{1, 2, 4, 5, 7, 8}
+            
+            IF !aSeatsAllowed:Contains(Seats)
+                
+                THROW Exception{ei"{seats} is an invalid Number of Seats! Must be within (1, 2, 4, 5, 7 and 8). "}
+                
+            ENDIF
+            
+        CATCH e AS Exception
+            
+            THROW e
+            
+        END TRY
+        
+    END METHOD
+    
 END CLASS
 
-END NAMESPACE // VehicleApp
+END NAMESPACE
 
-//    // Step 13 -- seats is moved to vehicle
+//// Step 13 -- seats is moved to vehicle
 ENUM AllowedSeats AS INT
     One := 1
     Two := 2
