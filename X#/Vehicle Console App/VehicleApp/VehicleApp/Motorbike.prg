@@ -12,13 +12,13 @@ USING System.Text
 BEGIN NAMESPACE VehicleApp
 
 	/// <summary>
-    /// The Class1 class.
-    /// </summary>
+	/// The Class1 class.
+	/// </summary>
 	CLASS Motorbike INHERIT Vehicle
 
-       CONSTRUCTOR(color AS STRING, make AS STRING, model AS STRING)
-            SUPER(color, make, model,2)
-       END CONSTRUCTOR
+	   CONSTRUCTOR(color AS STRING, make AS STRING, model AS STRING)
+			SUPER(color, make, model,2)
+	   END CONSTRUCTOR
 
 	END CLASS
-END NAMESPACE // VehicleApp
+END NAMESPACE

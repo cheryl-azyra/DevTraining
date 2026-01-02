@@ -13,20 +13,20 @@ USING VehicleApp
 FUNCTION Start() AS VOID STRICT
 	Console.WriteLine("WELCOME TO THE VEHICLE APP!")
 
-// 	//// Steps 1 and 2
-// 	//     LOCAL v1 AS Vehicle
-// 	//     LOCAL v2 AS Vehicle
-// 	//
-// 	//     v1 := Vehicle{"Red", "Ford", "F150"}
-// 	//     v2 := Vehicle{"Black", "Dodge", "Grand Caravan"}
-// 	//
-// 	//
-// 	//     // Print Vehicle Detail
-// 	//     Console.WriteLine(e"-----------------------------------------\n";
-// 	//                         +e"Testing Vehicles (from steps  1 and 2)\n")
-// 	//     v1:Display()
-// 	//     v2:Display()
-// 	//
+	// 	//// Steps 1 and 2
+	// 	//     LOCAL v1 AS Vehicle
+	// 	//     LOCAL v2 AS Vehicle
+	// 	//
+	// 	//     v1 := Vehicle{"Red", "Ford", "F150"}
+	// 	//     v2 := Vehicle{"Black", "Dodge", "Grand Caravan"}
+	// 	//
+	// 	//
+	// 	//     // Print Vehicle Detail
+	// 	//     Console.WriteLine(e"-----------------------------------------\n";
+	// 	//                         +e"Testing Vehicles (from steps  1 and 2)\n")
+	// 	//     v1:Display()
+	// 	//     v2:Display()
+	// 	//
 
 	//    STEP 4)	Create the following cars and add them to a List<Car>
 	//
@@ -121,28 +121,28 @@ FUNCTION Start() AS VOID STRICT
 	// b.	Blue, Yamaha R1
 	PrintStep("11")
 	TRY
-	LOCAL m1 as Motorbike
-	LOCAL m2 as Motorbike
-	m1 := Motorbike{"Red", "Honda", "50"}
-	m2 := Motorbike{"Blue", "Yamaha", "R1"}
+		LOCAL m1 as Motorbike
+		LOCAL m2 as Motorbike
+		m1 := Motorbike{"Red", "Honda", "50"}
+		m2 := Motorbike{"Blue", "Yamaha", "R1"}
 
-	// Add to List from step 4)
-	// carsList:Add(m1)
-	// carsList:Add(m2)
+		// Add to List from step 4)
+		// carsList:Add(m1)
+		// carsList:Add(m2)
 
-	// Add to C# in X# Array from step 4)
-	AAdd(carsCXArr, m1)
-	AAdd(carsCXArr, m2)
+		// Add to C# in X# Array from step 4)
+		AAdd(carsCXArr, m1)
+		AAdd(carsCXArr, m2)
 
-	Console.WriteLine(e"Testing: printing C# Array in X# - after trying to add motorbikes : should have cars 1,2,3,4 \n")
-	PrintCXCarArray(carsCXArr)
+		Console.WriteLine(e"Testing: printing C# Array in X# - after trying to add motorbikes : should have cars 1,2,3,4 \n")
+		PrintCXCarArray(carsCXArr)
 
-	// Add to X# Array from step 5)
-	AAdd(carsXArr, m1)
-	AAdd(carsXArr, m2)
+		// Add to X# Array from step 5)
+		AAdd(carsXArr, m1)
+		AAdd(carsXArr, m2)
 
-	Console.WriteLine(e"\nTesting: Updated X# Array  - after trying to add motorbikes : should have print cars  1,3,2,4 and motorbikes 5, 6 \n")
-	PrintXArray(carsXArr)
+		Console.WriteLine(e"\nTesting: Updated X# Array  - after trying to add motorbikes : should have print cars  1,3,2,4 and motorbikes 5, 6 \n")
+		PrintXArray(carsXArr)
 
 	CATCH e AS Exception
 
@@ -218,11 +218,11 @@ FUNCTION Start() AS VOID STRICT
 	Console.WriteLine(e"\nPress any key to continue...")
 	Console.ReadKey()
 
-RETURN
+	RETURN
 
 FUNCTION PrintStep(currStep as String) as VOID
 	Console.WriteLine(e"-----------------------------------------\n";
-						+i"Step {currStep}")
+		+i"Step {currStep}")
 END FUNCTION
 
 FUNCTION PrintListCar(carsList AS List<Car>) AS VOID
