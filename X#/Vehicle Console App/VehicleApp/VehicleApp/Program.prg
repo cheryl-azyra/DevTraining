@@ -88,8 +88,6 @@ FUNCTION Start() AS VOID STRICT
     // STEP 7)	Create a List and add the second and fourth cars from the C# array to it. Add this list to the end of the X# array.
     PrintStep("7")
     LOCAL carsList2 AS List<Car>
-    LOCAL cb AS CODEBLOCK
-    cb := {|v AS Vehicle| v:GetType():Name:toLower() != "vehicle"  }
     
     // Created list with 2nd and 4th car from C# array: should have car 2 and 4
     carsList2 := List<Car>{}
@@ -105,6 +103,8 @@ FUNCTION Start() AS VOID STRICT
     
     // STEP 8) Create a Codeblock to test if an object is not of type Vehicle. Use this Codeblock to determine which element in the X# array is not a Vehicle and print it out.
     PrintStep("8")
+    LOCAL cb AS CODEBLOCK
+    cb := {|v AS Vehicle| v:GetType():Name:toLower() != "vehicle"  }
     LOCAL Pos AS DWORD
     Pos := ASCAN(carsXArr,cb)
     
