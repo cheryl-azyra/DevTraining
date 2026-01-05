@@ -25,5 +25,11 @@ CLASS Motorbike INHERIT Vehicle
         Console.Write( ei"\tWheels: 2"+System.Environment.NewLine )
     END METHOD
     
+    OVERRIDE METHOD DisplayVroom() AS VOID
+        
+        Console.WriteLine( "Vroooooom")
+        
+    END METHOD
+    
 END CLASS
 END NAMESPACE

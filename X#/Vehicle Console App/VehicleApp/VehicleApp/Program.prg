@@ -94,24 +94,23 @@ FUNCTION Start() AS VOID STRICT
     carsList2:Add(carsCXArr[2]) // 2nd car
     carsList2:Add(carsCXArr[4]) // 4th car
     
-    FOREACH c AS Car IN carsList2
-        AAdd(carsXArr,c)
-    NEXT
+    AAdd(carsXArr,carsList2)
     
-    Console.WriteLine(e"Testing: 7)	Create a List and add the second and fourth cars from the C# array to it. Add this list to the end of the X# array: should have cars 1,3,2,4  "+System.Environment.NewLine)
+    Console.WriteLine(e"Testing: 7)	Create a List and add the second and fourth cars from the C# array to it. Add this list to the end of the X# array: should have cars 1,3, list car (2,4)  "+System.Environment.NewLine)
     PrintXArray(carsXArr)
     
     // STEP 8) Create a Codeblock to test if an object is not of type Vehicle. Use this Codeblock to determine which element in the X# array is not a Vehicle and print it out.
     PrintStep("8")
-    LOCAL cb AS CODEBLOCK
-    cb := {|v| !IsInstanceOf(v, #Vehicle)}
+    LOCAL cb_NotVehicle AS CODEBLOCK
+    cb_NotVehicle := {|v| !IsInstanceOf(v, #Vehicle)}
     LOCAL Pos AS DWORD
-    Pos := ASCAN(carsXArr,cb)+1
+    LOCAL PosType AS STRING
+    Pos := ASCAN(carsXArr,cb_NotVehicle)
+    PosType := carsXArr[Pos]:GetType():Name
     
     Console.WriteLine(ei"Testing: Printing which element in X# Array is not a vehicle & printing it: will return position 1 and print car 1"+System.Environment.NewLine)
     
-    Console.WriteLine(i"The object at position {Pos} is not a Vehicle")
-    ((Vehicle)carsXArr[Pos]):DISPLAY()
+    Console.WriteLine(i"The object at position {Pos} is not a Vehicle, it is a {PosType}")
     
     // Step 9)	Use System.Linq.IEnumerable<T>.OrderBy and a lambda expression to sort the cars by number of seats in descending order.
     PrintStep("9")
@@ -141,14 +140,14 @@ FUNCTION Start() AS VOID STRICT
         AAdd(carsCXArr, m1)
         AAdd(carsCXArr, m2)
         
-        Console.WriteLine(e"Testing: printing C# Array in X# - after trying to add motorbikes : should have cars 1,2,3,4 "+System.Environment.NewLine)
+        Console.WriteLine(e"Testing: printing C# Array in X# - after trying to add motorbikes : should have cars 1,3, list car (2,4)  "+System.Environment.NewLine)
         PrintCXCarArray(carsCXArr)
         
         // Add to X# Array from step 5)
         AAdd(carsXArr, m1)
         AAdd(carsXArr, m2)
         
-        Console.WriteLine(e"\nTesting: Updated X# Array  - after trying to add motorbikes : should have print cars  1,3,2,4 and motorbikes 5, 6 "+System.Environment.NewLine)
+        Console.WriteLine(e"\nTesting: Updated X# Array  - after trying to add motorbikes : should have print cars  1,3,1,3, list car (2,4) and motorbikes 5, 6 "+System.Environment.NewLine)
         PrintXArray(carsXArr)
         
     CATCH e AS Exception
@@ -160,14 +159,14 @@ FUNCTION Start() AS VOID STRICT
         
     // 12)	Use a foreach loop to loop through the X# array from 5) and only display the details of the Motorbikes
     PrintStep("12")
-    LOCAL cb2 AS CODEBLOCK
-    cb2 := {|v AS Vehicle| IsInstanceOf(v, #MOTORBIKE)}
+    LOCAL cb_isMB AS CODEBLOCK
+    cb_isMB := {|v | IsInstanceOf(v, #Motorbike)}
     
     Console.WriteLine(e"Testing: Print each motorbike in X# array : should print motobikes 5, 6"+System.Environment.NewLine)
     
-    FOREACH v AS Vehicle IN carsXArr
-        IF eval(cb2, v)
-            v:Display(TRUE)
+    FOREACH VAR v IN carsXArr
+        IF eval(cb_isMB, v)
+            ((Vehicle) v):Display(TRUE)
         ENDIF
     NEXT
     
@@ -194,7 +193,7 @@ FUNCTION Start() AS VOID STRICT
     AAdd(carsXArr,b2)
     AAdd(carsXArr,b3)
     
-    Console.WriteLine(e"Testing: Update X# Array with added buses : should print car 1,3,2,4, motorbike 5, 6, bus 7 , 8, 9")
+    Console.WriteLine(e"Testing: Update X# Array with added buses : should print car 1,3,1,3, list car (2,4)  motorbike 5, 6, bus 7 , 8, 9")
     
     PrintXArray(carsXArr)
     
@@ -207,9 +206,10 @@ FUNCTION Start() AS VOID STRICT
     
     Console.WriteLine(e"Testing: Print each vehicle with Vroom Variant in X# array")
     
-    
-    FOREACH v AS Vehicle IN carsXArr
-        v:DisplayVroom()
+    FOREACH VAR v IN carsXArr
+        IF !eval(cb_NotVehicle, v)
+            ((Vehicle) v):DisplayVroom()
+        ENDIF
     NEXT
     
     //16)	Write a string extension method to capitalise the first letter of every word. Enhance the Make and Model properties in the vehicle class to capitalise the first letter of every word by using the extension method
@@ -250,17 +250,17 @@ END FUNCTION
 
 FUNCTION PrintXArray(XArr AS ARRAY) AS VOID
     LOCAL i AS INT
+    LOCAL cb AS CODEBLOCK
+    LOCAL currVehicle AS Vehicle
+    cb := {|v| !IsInstanceOf(v, #Vehicle)}
+    
     FOR i := 1 TO XArr:Count
-        LOCAL currVehicle AS Vehicle
-        currVehicle := (Vehicle) XArr[i]
-        IF IsInstanceOf(currVehicle,#CAR)
-            ((Car) XArr[i]):Display()
-        ELSEIF IsInstanceOf(currVehicle, #MOTOBIKE)
-            ((Motorbike) XArr[i]):Display()
-        ELSEIF IsInstanceOf(currVehicle, #BUS)
-            ((Bus) XArr[i]):Display()
+        
+        IF eval(cb, XArr[i])
+            Console.writeLine(ei"Object is not a vehicle"+System.Environment.NewLine)
         ELSE
-            Console.writeLine(ei"ERROR: Invalid Type - cannot print element at position {i}"+System.Environment.NewLine)
+            currVehicle := XArr[i]
+            currVehicle:Display()
         ENDIF
     NEXT
     

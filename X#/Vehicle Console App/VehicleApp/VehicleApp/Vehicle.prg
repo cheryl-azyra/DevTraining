@@ -86,16 +86,9 @@ CLASS Vehicle
     END METHOD
     
     VIRTUAL METHOD DisplayVroom() AS VOID
-        LOCAL type := SELF:GetType():Name
-        IF type == "Car"
-            Console.WriteLine( "Vroom, vroom")
-        ELSEIF type == "Motorbike"
-            Console.WriteLine( "Vroooooom")
-        ELSEIF type == "Bus"
-            Console.WriteLine( "Vroom")
-        ENDIF
         
     END METHOD
+    
     
     PUBLIC STATIC METHOD CapitaliseEachWord(SELF s AS STRING) AS STRING
         LOCAL textInfo AS System.Globalization.TextInfo

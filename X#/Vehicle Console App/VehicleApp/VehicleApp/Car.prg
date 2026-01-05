@@ -74,6 +74,12 @@ CLASS Car INHERIT Vehicle
         
     END METHOD
     
+    OVERRIDE METHOD DisplayVroom() AS VOID
+        
+        Console.WriteLine( "Vroom, vroom")
+        
+    END METHOD
+    
 END CLASS
 
 END NAMESPACE

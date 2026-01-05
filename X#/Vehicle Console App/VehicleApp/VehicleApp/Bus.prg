@@ -32,6 +32,11 @@ CLASS Bus INHERIT Vehicle
             +ei"\tStanding: {Standing}"+System.Environment.NewLine)
     END METHOD
     
+    OVERRIDE METHOD DisplayVroom() AS VOID
+        
+        Console.WriteLine( "Vroom")
+        
+    END METHOD
     
 END CLASS
 
