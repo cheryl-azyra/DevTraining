@@ -104,9 +104,9 @@ FUNCTION Start() AS VOID STRICT
     // STEP 8) Create a Codeblock to test if an object is not of type Vehicle. Use this Codeblock to determine which element in the X# array is not a Vehicle and print it out.
     PrintStep("8")
     LOCAL cb AS CODEBLOCK
-    cb := {|v AS Vehicle| v:GetType():Name:toLower() != "vehicle"  }
+    cb := {|v| !IsInstanceOf(v, #Vehicle)}
     LOCAL Pos AS DWORD
-    Pos := ASCAN(carsXArr,cb)
+    Pos := ASCAN(carsXArr,cb)+1
     
     Console.WriteLine(ei"Testing: Printing which element in X# Array is not a vehicle & printing it: will return position 1 and print car 1"+System.Environment.NewLine)
     
@@ -161,7 +161,7 @@ FUNCTION Start() AS VOID STRICT
     // 12)	Use a foreach loop to loop through the X# array from 5) and only display the details of the Motorbikes
     PrintStep("12")
     LOCAL cb2 AS CODEBLOCK
-    cb2 := {|v AS Vehicle| v:GetType():Name:ToLower() == "motorbike" }
+    cb2 := {|v AS Vehicle| IsInstanceOf(v, #MOTORBIKE)}
     
     Console.WriteLine(e"Testing: Print each motorbike in X# array : should print motobikes 5, 6"+System.Environment.NewLine)
     
@@ -253,11 +253,11 @@ FUNCTION PrintXArray(XArr AS ARRAY) AS VOID
     FOR i := 1 TO XArr:Count
         LOCAL currVehicle AS Vehicle
         currVehicle := (Vehicle) XArr[i]
-        IF currVehicle:GetType():Name:ToLower()  == "car"
+        IF IsInstanceOf(currVehicle,#CAR)
             ((Car) XArr[i]):Display()
-        ELSEIF currVehicle:GetType():Name:ToLower()  == "motorbike"
+        ELSEIF IsInstanceOf(currVehicle, #MOTOBIKE)
             ((Motorbike) XArr[i]):Display()
-        ELSEIF currVehicle:GetType():Name:ToLower()  == "bus"
+        ELSEIF IsInstanceOf(currVehicle, #BUS)
             ((Bus) XArr[i]):Display()
         ELSE
             Console.writeLine(ei"ERROR: Invalid Type - cannot print element at position {i}"+System.Environment.NewLine)
