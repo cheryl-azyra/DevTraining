@@ -18,9 +18,14 @@ CLASS Bus INHERIT Vehicle
     PRIVATE PROPERTY Floors AS STRING AUTO
     PRIVATE PROPERTY Standing AS INT AUTO
         
-        
-    CONSTRUCTOR(color AS STRING, make AS STRING, model AS STRING, seats AS INT, floors AS STRING, standing AS INT )
-        SUPER(color, make, model,6, seats)
+    CONSTRUCTOR(color AS STRING, make AS STRING, model AS STRING, seats AS INT, floors AS STRING)
+        SUPER(color, make, model, 6, seats)
+        SELF:Floors := floors
+        SELF:Standing := 0
+    END CONSTRUCTOR
+    
+    CONSTRUCTOR(color AS STRING, make AS STRING, model AS STRING, seats AS INT, floors AS STRING, standing AS INT)
+        SUPER(color, make, model, 6, seats)
         SELF:Floors := floors
         SELF:Standing := standing
     END CONSTRUCTOR

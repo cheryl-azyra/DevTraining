@@ -179,7 +179,7 @@ FUNCTION Start() AS VOID STRICT
     LOCAL b1 AS Bus
     LOCAL b2 AS Bus
     LOCAL b3 AS Bus
-    b1 :=   Bus{"Grey", "Volvo", "9900", 60, "single floor", 0}
+    b1 :=   Bus{"Grey", "Volvo", "9900", 60, "single floor"}
     b2 :=   Bus{"", "Volvo", "B5TL", 80, "2 floors", 50 }
     b3 :=	Bus{"", "WrightBus ", "Eclipse Gemini", 76, "double deck",52}
     
