@@ -206,10 +206,23 @@ FUNCTION Start() AS VOID STRICT
     
     Console.WriteLine(e"Testing: Print each vehicle with Vroom Variant in X# array")
     
+    //     FOREACH VAR v IN carsXArr
+    //         IF !eval(cb_NotVehicle, v)
+    //             ((Vehicle) v):DisplayVroom()
+    //         ENDIF
+    //     NEXT
+    
     FOREACH VAR v IN carsXArr
-        IF !eval(cb_NotVehicle, v)
-            ((Vehicle) v):DisplayVroom()
-        ENDIF
+        DO CASE
+        CASE IsInstanceOf(v, "Car")
+            Console.WriteLine("Vroom, vroom")
+        CASE IsInstanceOf(v,"Bus")
+            Console.WriteLine("Vroom")
+        CASE IsInstanceOf(v,"Motorbike")
+            Console.WriteLine("Vroooooom")
+        OTHERWISE
+            Console.WriteLine("Invalid Type")
+        END CASE
     NEXT
     
     //16)	Write a string extension method to capitalise the first letter of every word. Enhance the Make and Model properties in the vehicle class to capitalise the first letter of every word by using the extension method
