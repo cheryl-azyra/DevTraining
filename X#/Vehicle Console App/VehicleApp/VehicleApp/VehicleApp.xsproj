@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(XSharpMsBuildDir)\XSharp.Default.props" />
+  <PropertyGroup>
+    <ProjectGuid>75c58500-543b-47aa-86e0-b189f34403a5</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>VehicleApp</RootNamespace>
+    <AssemblyName>VehicleApp</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <Name>VehicleApp</Name>
+    <OutputName>VehicleApp</OutputName>
+    <StartupObject />
+    <Dialect>Vulcan</Dialect>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <Import Project="$(XSharpMsBuildDir)\XSharp.targets" />
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="XSharp.Core, Version=2.6.0.0, Culture=neutral, PublicKeyToken=ed555a0467764586">
+      <Name>XSharp.Core</Name>
+      <AssemblyName>XSharp.Core.dll</AssemblyName>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\XSharp\Assemblies\XSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="XSharp.RT, Version=2.6.0.0, Culture=neutral, PublicKeyToken=ed555a0467764586">
+      <Name>XSharp.RT</Name>
+      <AssemblyName>XSharp.RT.dll</AssemblyName>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\XSharp\Assemblies\XSharp.RT.dll</HintPath>
+    </Reference>
+    <Reference Include="XSharp.VO, Version=2.6.0.0, Culture=neutral, PublicKeyToken=ed555a0467764586">
+      <Name>XSharp.VO</Name>
+      <AssemblyName>XSharp.VO.dll</AssemblyName>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\XSharp\Assemblies\XSharp.VO.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Car.prg" />
+    <Compile Include="Bus.prg" />
+    <Compile Include="Motorbike.prg" />
+    <Compile Include="Vehicle.prg" />
+    <Compile Include="Properties\AssemblyInfo.prg">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Program.prg">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <PreBuildEvent />
+    <PostBuildEvent />
+    <RunPostBuildEvent />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <PreBuildEvent />
+    <PostBuildEvent />
+    <RunPostBuildEvent />
+  </PropertyGroup>
+</Project>
