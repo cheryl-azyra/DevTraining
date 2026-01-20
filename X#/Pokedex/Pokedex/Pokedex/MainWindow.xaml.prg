@@ -71,22 +71,22 @@ PUBLIC PARTIAL CLASS MainWindow ;
         
         TRY
             LOCAL response AS STRING
-            LOCAL jsonDoc  AS JsonDocument
-            LOCAL results AS JsonElement
-            LOCAL Pokemon AS Pokemon
+            LOCAL jsonData  AS PokemonApiResponse
+            LOCAL opts AS JsonSerializerOptions
             
-            response := AWAIT client:GetStringAsync(url)
-            jsonDoc := JsonDocument.Parse(response)
-            results := jsonDoc:RootElement:GetProperty("results")
+            opts := JsonSerializerOptions{}
+            opts:PropertyNameCaseInsensitive := TRUE
+            
             PokemonList := List<Pokemon>{}
+            response := AWAIT client:GetStringAsync(url)
+            jsonData := JsonSerializer.Deserialize<PokemonApiResponse>(response,opts)
             
-            FOREACH VAR item IN results:EnumerateArray()
-                VAR pURL := item:GetProperty("url"):GetString()
-                VAR tags := pURL:Split('/')
-                VAR tagNum := val(tags[tags:Length - 1])
-                Pokemon := Pokemon{tagNum,item:GetProperty("name"):GetString(),pURL}
-                PokemonList:Add(Pokemon)
-                console.WriteLine()
+            FOREACH VAR item IN jsonData:Results
+                VAR tags   := item:url:Split('/')
+                VAR tagNum := Val(tags[tags:Length - 1])
+                
+                pokemonList:Add(Pokemon{tagNum, item:name, item:url })
+                
             NEXT
             
         CATCH e AS Exception
@@ -126,20 +126,22 @@ PUBLIC PARTIAL CLASS MainWindow ;
         LOCAL client := HttpClient{} AS HttpClient
         TRY
             LOCAL response AS STRING
-            LOCAL jsonDoc  AS JsonDocument
-            LOCAL statsData AS JsonElement
+            LOCAL jsonData  AS PokemonDetailsResponse
             LOCAL spritePath AS STRING
+            LOCAL opts AS JsonSerializerOptions
+            
+            opts := JsonSerializerOptions{}
+            opts:PropertyNameCaseInsensitive := TRUE
             
             response := AWAIT client:GetStringAsync(Pokemon:URL)
-            jsonDoc := JsonDocument.Parse(response)
-            statsData := jsonDoc:RootElement:GetProperty("stats")
-            spritePath := jsonDoc:RootElement:GetProperty("sprites"):GetProperty("other"):GetProperty("official-artwork"):GetProperty("front_default"):GetString()
+            jsonData := jsonSerializer.Deserialize<PokemonDetailsResponse>(response, opts)
+            spritePath :=  GetOfficialArtworkFromJson(response)
             
             AWAIT LoadSprite(spritePath)
-            AWAIT LoadStatsString(statsData)
+            AWAIT LoadStatsString(jsonData:stats)
             
-            pHeight:Text := "Height " + jsonDoc:RootElement:GetProperty("height"):GetInt32():ToString()
-            pWeight:Text  :="Weight " + jsonDoc:RootElement:GetProperty("weight"):GetInt32():ToString()
+            pHeight:Text := "Height " + jsonData:height:ToString()
+            pWeight:Text  :="Weight " + jsonData:weight:ToString()
             
         CATCH err AS Exception
             MessageBox.Show(err:Message, "Error")
@@ -187,21 +189,14 @@ PUBLIC PARTIAL CLASS MainWindow ;
     END METHOD
     
     // Get Stats - name and details
-    ASYNC METHOD LoadStatsString(statsData AS JsonElement ) AS TASK
-        LOCAL sb AS StringBuilder
-        LOCAL textInfo AS TextInfo
+    ASYNC METHOD LoadStatsString(statsData AS  List<PokemonStat>  ) AS TASK
         
-        TextInfo := CultureInfo.CurrentCulture:TextInfo
-        sb:= StringBuilder{}
-        
-        FOREACH VAR s IN statsData:EnumerateArray()
-            LOCAL statName := s:GetProperty("stat"):GetProperty("name"):GetString()
-            LOCAL baseStat := s:GetProperty("base_stat"):GetInt32()
+        FOREACH VAR s IN statsData
             
             // Label
             LOCAL lbl AS TextBlock
             lbl := TextBlock{}
-            lbl:Text := TextInfo:ToTitleCase(statName) + "  " + baseStat:toString()
+            lbl:Text := ei"{s:stat:DisplayName} {s:base_stat}"
             lbl:FontWeight := FontWeights.Bold
             lbl:Margin := Thickness{0,2,0,0}
             
@@ -210,7 +205,7 @@ PUBLIC PARTIAL CLASS MainWindow ;
             bar := ProgressBar{}
             bar:Minimum := 0
             bar:Maximum := 255
-            bar:Value := baseStat
+            bar:Value :=  s:base_stat
             bar:Height := 5
             bar:Foreground := Brushes.Green
             bar:Margin := Thickness{0,0,0,2}
@@ -273,6 +268,19 @@ PUBLIC PARTIAL CLASS MainWindow ;
         IF PropertyChanged <> NULL
             PropertyChanged(SELF, PropertyChangedEventArgs{propertyName})
         ENDIF
+    END METHOD
+    
+    // Get URL path.  Could not use JsonSerializer.Deserialize because of '-' character in property name.
+    PUBLIC METHOD GetOfficialArtworkFromJson(response AS STRING) AS STRING
+        LOCAL jsonDoc AS JsonDocument
+        LOCAL sprite AS STRING
+        TRY
+            jsonDoc := JsonDocument.Parse(response)
+            sprite := jsonDoc:RootElement:GetProperty("sprites"):GetProperty("other"):GetProperty("official-artwork"):GetProperty("front_default"):GetString()
+        CATCH
+            sprite := ""
+        END TRY
+        RETURN sprite
     END METHOD
     
 END CLASS

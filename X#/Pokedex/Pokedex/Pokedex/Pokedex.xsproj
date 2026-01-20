@@ -152,7 +152,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Pokemon.prg" />
+    <Compile Include="PokemonDTOs.prg" />
     <Compile Include="MainWindow.xaml.prg">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
