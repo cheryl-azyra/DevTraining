@@ -29,12 +29,36 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Button Name="PreviousButton" IsEnabled="{Binding HasPrevious}"  Grid.Column="0" Content="&lt;"  HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch" Margin="0,0,0,0" Click="GetPreviousButton_Click"/>
-                <Button Name="NextButton" IsEnabled="{Binding HasNext}"   Grid.Column="1" Content="&gt;"  HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch" Margin="0,0,0,0" Click="GetNextButton_Click"/>
-            </Grid    >
+                <Button Name="PreviousButton" IsEnabled="{Binding hasPrevious}"  Grid.Column="0" Content="&lt;"  HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch" Margin="0,0,0,0" Click="GetPreviousPageButton_Click"/>
 
+                <Button Name="NextButton" Grid.Column="1" Content="&gt;" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="GetNextPageButton_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding hasNext}" Value="False">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button Name="MoreButton" Grid.Column="1" Content="Get More" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="GetMoreButton_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding canGetMore}" Value="true">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
         </Grid>
 
         <!-- Details panel -->

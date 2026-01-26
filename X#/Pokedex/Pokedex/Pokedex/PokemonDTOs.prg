@@ -18,7 +18,6 @@ BEGIN NAMESPACE Pokedex
 /// defining base pokemon models
 /// </summary>
 CLASS Pokemon
-    
     PUBLIC PROPERTY  Name AS STRING AUTO
     PUBLIC PROPERTY  URL AS STRING AUTO
     PUBLIC PROPERTY  ID AS INT AUTO
@@ -35,13 +34,13 @@ CLASS Pokemon
         SELF:Name := name
         SELF:URL := url
     END CONSTRUCTOR
-    
-    
-    
 END CLASS
 
 CLASS PokemonApiResponse
     PUBLIC PROPERTY results AS List<Pokemon> AUTO
+    PUBLIC PROPERTY next AS STRING AUTO
+    PUBLIC PROPERTY previous AS  STRING AUTO
+    PUBLIC PROPERTY count AS  INT AUTO
 END CLASS
 
 
@@ -68,7 +67,6 @@ CLASS PokemonDetailsResponse
     PUBLIC PROPERTY height AS INT AUTO
     PUBLIC PROPERTY weight AS INT AUTO
     PUBLIC PROPERTY stats  AS List<PokemonStat> AUTO
-        
 END CLASS
 
 END NAMESPACE
