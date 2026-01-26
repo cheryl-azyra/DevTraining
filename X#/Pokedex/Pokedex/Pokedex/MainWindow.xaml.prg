@@ -30,44 +30,61 @@ PUBLIC PARTIAL CLASS MainWindow ;
         IMPLEMENTS INotifyPropertyChanged
     
     // Pageination properties
+    PRIVATE _PokedexURL := "https://pokeapi.co/api/v2/pokemon?" AS STRING
+    PRIVATE _PokemonList AS List<Pokemon>
     PRIVATE _pageinatelimit := 15 AS INT
     PRIVATE _pageinateOffset := 0 AS INT
     PRIVATE _maxRecords := 151 AS INT
-    PUBLIC PROPERTY HasNext AS LOGIC
+    PRIVATE  _totalCount AS INT
+    PRIVATE _NextURL AS STRING
+    PRIVATE _PreviousURL AS STRING
+        
+    PUBLIC PROPERTY hasNext AS LOGIC
         GET
-            RETURN _pageinateOffset +_pageinatelimit < _maxRecords
+            RETURN _pageinateOffset +_pageinatelimit  < _PokemonList:Count
         END GET
     END PROPERTY
-    
-    PUBLIC PROPERTY HasPrevious AS LOGIC
+    PUBLIC PROPERTY hasPrevious AS LOGIC
         GET
             RETURN _pageinateOffset > 0
+        END GET
+    END PROPERTY
+    PUBLIC PROPERTY hasMore AS LOGIC
+        GET
+            RETURN  _PokemonList:Count  < _totalCount
+        END GET
+    END PROPERTY
+    PUBLIC PROPERTY canGetMore AS LOGIC
+        GET
+            RETURN  !hasNext .AND. hasMore
         END GET
     END PROPERTY
     
     PUBLIC CONSTRUCTOR() STRICT
         InitializeComponent()
         SELF:DataContext := SELF
-        LoadPokemon(GetUrl())
-        RETURN
-    END CONSTRUCTOR
-    
-    // Populate ListBox
-    ASYNC METHOD LoadPokemon(url AS STRING) AS Task
-        LOCAL PokemonList AS List<Pokemon>
-        PokemonList := AWAIT SELF:GetPokemonAsync(url)
-        PokemonNameList:Items:Clear()
+        _PokemonList := List<Pokemon>{}
+        INIT()
+            
+            RETURN
+        END CONSTRUCTOR
         
-        FOREACH p AS Pokemon IN PokemonList
-            SELF:PokemonNameList:Items:Add(p)
-        NEXT
+    ASYNC METHOD Init() AS Task
+        
+        AWAIT SELF:GetPokemonAsync()
+        AWAIT LoadPokemonPage()
+        
+        _pageinateOffset +=  _pageinatelimit
+        
+        SELF:RaisePropertyChanged("hasNext")
+        SELF:RaisePropertyChanged("hasMore")
+        SELF:RaisePropertyChanged("canGetMore")
         
     END METHOD
     
-    // Call API TO GET list OF Pokemon
-    ASYNC METHOD GetPokemonAsync(url AS STRING) AS Task<List<Pokemon>>
+    // Call API TO GET list of 151 pokemon and store in list
+    ASYNC METHOD GetPokemonAsync() AS Task
         LOCAL client := HttpClient{} AS HttpClient
-        LOCAL PokemonList AS List<Pokemon>
         
         TRY
             LOCAL response AS STRING
@@ -77,23 +94,54 @@ PUBLIC PARTIAL CLASS MainWindow ;
             opts := JsonSerializerOptions{}
             opts:PropertyNameCaseInsensitive := TRUE
             
-            PokemonList := List<Pokemon>{}
-            response := AWAIT client:GetStringAsync(url)
+            
+            response := AWAIT client:GetStringAsync(IIF(_NextURL = NULL ,GetAllPokemonUrl(),_NextURL))
             jsonData := JsonSerializer.Deserialize<PokemonApiResponse>(response,opts)
             
             FOREACH VAR item IN jsonData:Results
                 VAR tags   := item:url:Split('/')
                 VAR tagNum := Val(tags[tags:Length - 1])
                 
-                pokemonList:Add(Pokemon{tagNum, item:name, item:url })
+                _PokemonList:Add(Pokemon{tagNum, item:name, item:url })
                 
             NEXT
+            
+            IF   (jsonData:Next != NULL)
+                
+                _NextURL := jsonData:Next
+                
+            ENDIF
+            
+            IF   (jsonData:Count != NULL)
+                
+                _totalCount := jsonData:Count
+                
+            ENDIF
+            
             
         CATCH e AS Exception
             MessageBox.Show(e:Message, "Error")
         END TRY
         
-        RETURN PokemonList:OrderBy({p => p:id}):toList()
+        
+    END METHOD
+    
+    
+    // Load page of pokemon from memory
+    ASYNC METHOD LoadPokemonPage() AS Task
+        LOCAL pageItems AS List<Pokemon>
+        
+        pageItems := _PokemonList ;
+            :Skip(_pageinateOffset) ;
+            :Take(_pageinatelimit) ;
+            :ToList()
+        
+        PokemonNameList:Items:Clear()
+        
+        
+        FOREACH p AS Pokemon IN pageItems
+            SELF:PokemonNameList:Items:Add(p)
+        NEXT
         
     END METHOD
     
@@ -230,35 +278,53 @@ PUBLIC PARTIAL CLASS MainWindow ;
     END METHOD
     
     // Get Next pokemon in list
-    ASYNC METHOD GetNextButton_Click(sender AS System.Object, e AS System.Windows.RoutedEventArgs) AS VOID STRICT
-        IF HasNext
-            
-            _pageinateOffset +=  _pageinatelimit
-            SELF:RaisePropertyChanged("HasNext")
-            SELF:RaisePropertyChanged("HasPrevious")
-            AWAIT LoadPokemon(GetUrl() )
-            
-        ENDIF
+    ASYNC METHOD GetMoreButton_Click(sender AS System.Object, e AS System.Windows.RoutedEventArgs) AS VOID STRICT
+        
+        PokemonNameList:Visibility := Visibility.Collapsed
+        LoadingBar:Visibility := Visibility.Visible
+        AWAIT INIT()
+        PokemonNameList:Visibility := Visibility.Visible
+        LoadingBar:Visibility := Visibility.Collapsed
+        
+        
+        RETURN
+    END METHOD
+    
+    
+    // Get Next pokemon in list
+    ASYNC METHOD GetNextPageButton_Click(sender AS System.Object, e AS System.Windows.RoutedEventArgs) AS VOID STRICT
+        
+        _pageinateOffset +=  _pageinatelimit
+        SELF:RaisePropertyChanged("hasNext")
+        SELF:RaisePropertyChanged("hasPrevious")
+        SELF:RaisePropertyChanged("hasMore")
+        SELF:RaisePropertyChanged("canGetMore")
+        AWAIT LoadPokemonPage()
+        
         RETURN
     END METHOD
     
     // Get Preivous pokemon in list
-    ASYNC METHOD GetPreviousButton_Click(sender AS System.Object, e AS System.Windows.RoutedEventArgs) AS VOID STRICT
-        IF HasPrevious
+    ASYNC METHOD GetPreviousPageButton_Click(sender AS System.Object, e AS System.Windows.RoutedEventArgs) AS VOID STRICT
+        IF hasPrevious
             
             _pageinateOffset -= _pageinatelimit
-            SELF:RaisePropertyChanged("HasNext")
-            SELF:RaisePropertyChanged("HasPrevious")
-            AWAIT LoadPokemon(GetUrl() )
+            SELF:RaisePropertyChanged("hasNext")
+            SELF:RaisePropertyChanged("hasPrevious")
+            SELF:RaisePropertyChanged("hasMore")
+            SELF:RaisePropertyChanged("canGetMore")
+            AWAIT LoadPokemonPage()
+            
         ENDIF
         RETURN
     END METHOD
     
+    
+    
     // Deterime the url to use
-    METHOD GetUrl() AS STRING
-        LOCAL Limit AS INT
-        Limit := MIN(_pageinatelimit,  _maxRecords - _pageinateOffset)
-        RETURN "https://pokeapi.co/api/v2/pokemon?limit=" + Limit:ToString() + "&offset=" + _pageinateOffset:ToString()
+    METHOD GetAllPokemonUrl() AS STRING
+        
+        RETURN _PokedexURL+"limit=" + _maxRecords:ToString() + "&offset=" + _PokemonList:Count:ToString()
     END METHOD
     
     PUBLIC EVENT PropertyChanged AS PropertyChangedEventHandler
