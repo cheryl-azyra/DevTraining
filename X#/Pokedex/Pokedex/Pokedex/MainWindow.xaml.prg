@@ -77,7 +77,6 @@ PUBLIC PARTIAL CLASS MainWindow ;
         _pageinateOffset +=  _pageinatelimit
         
         SELF:RaisePropertyChanged("hasNext")
-        SELF:RaisePropertyChanged("hasPrevious")
         SELF:RaisePropertyChanged("hasMore")
         SELF:RaisePropertyChanged("canGetMore")
         
